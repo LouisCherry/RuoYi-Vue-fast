@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.common.mapper.FrameAttachinfoMapper">
+    
+    <resultMap type="FrameAttachinfo" id="FrameAttachinfoResult">
+        <result property="ATTACHGUID"    column="ATTACHGUID"    />
+        <result property="attachfilename"    column="attachfilename"    />
+        <result property="CONTENTTYPE"    column="CONTENTTYPE"    />
+        <result property="ATTACHLENGTH"    column="ATTACHLENGTH"    />
+        <result property="CLIENGTAG"    column="CLIENGTAG"    />
+        <result property="CLIENGGUID"    column="CLIENGGUID"    />
+        <result property="FILEPATH"    column="FILEPATH"    />
+        <result property="UPLOADUSERGUID"    column="UPLOADUSERGUID"    />
+        <result property="UPLOADUSERDISPLAYNAME"    column="UPLOADUSERDISPLAYNAME"    />
+        <result property="UPLOADDATETIME"    column="UPLOADDATETIME"    />
+    </resultMap>
+
+    <sql id="selectFrameAttachinfoVo">
+        select ATTACHGUID, attachfilename, CONTENTTYPE, ATTACHLENGTH, CLIENGTAG, CLIENGGUID, FILEPATH, UPLOADUSERGUID, UPLOADUSERDISPLAYNAME, UPLOADDATETIME from frame_attachinfo
+    </sql>
+
+    <select id="selectFrameAttachinfoList" parameterType="FrameAttachinfo" resultMap="FrameAttachinfoResult">
+        <include refid="selectFrameAttachinfoVo"/>
+        <where>  
+            <if test="attachfilename != null  and attachfilename != ''"> and attachfilename like concat('%', #{attachfilename}, '%')</if>
+            <if test="CONTENTTYPE != null  and CONTENTTYPE != ''"> and CONTENTTYPE = #{CONTENTTYPE}</if>
+            <if test="CLIENGTAG != null  and CLIENGTAG != ''"> and CLIENGTAG = #{CLIENGTAG}</if>
+            <if test="FILEPATH != null  and FILEPATH != ''"> and FILEPATH = #{FILEPATH}</if>
+            <if test="UPLOADUSERDISPLAYNAME != null  and UPLOADUSERDISPLAYNAME != ''"> and UPLOADUSERDISPLAYNAME like concat('%', #{UPLOADUSERDISPLAYNAME}, '%')</if>
+            <if test="UPLOADDATETIME != null "> and UPLOADDATETIME = #{UPLOADDATETIME}</if>
+        </where>
+    </select>
+
+    <select id="selectFrameAttachinfoListByCliengguid" parameterType="String" resultMap="FrameAttachinfoResult">
+        <include refid="selectFrameAttachinfoVo"/>
+        where CLIENGGUID = #{CLIENGGUID}
+    </select>
+    
+    <select id="selectFrameAttachinfoByATTACHGUID" parameterType="String" resultMap="FrameAttachinfoResult">
+        <include refid="selectFrameAttachinfoVo"/>
+        where ATTACHGUID = #{ATTACHGUID}
+    </select>
+
+    <insert id="insertFrameAttachinfo" parameterType="FrameAttachinfo">
+        insert into frame_attachinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ATTACHGUID != null">ATTACHGUID,</if>
+            <if test="attachfilename != null">attachfilename,</if>
+            <if test="CONTENTTYPE != null">CONTENTTYPE,</if>
+            <if test="ATTACHLENGTH != null">ATTACHLENGTH,</if>
+            <if test="CLIENGTAG != null">CLIENGTAG,</if>
+            <if test="CLIENGGUID != null">CLIENGGUID,</if>
+            <if test="FILEPATH != null">FILEPATH,</if>
+            <if test="UPLOADUSERGUID != null">UPLOADUSERGUID,</if>
+            <if test="UPLOADUSERDISPLAYNAME != null">UPLOADUSERDISPLAYNAME,</if>
+            <if test="UPLOADDATETIME != null">UPLOADDATETIME,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ATTACHGUID != null">#{ATTACHGUID},</if>
+            <if test="attachfilename != null">#{attachfilename},</if>
+            <if test="CONTENTTYPE != null">#{CONTENTTYPE},</if>
+            <if test="ATTACHLENGTH != null">#{ATTACHLENGTH},</if>
+            <if test="CLIENGTAG != null">#{CLIENGTAG},</if>
+            <if test="CLIENGGUID != null">#{CLIENGGUID},</if>
+            <if test="FILEPATH != null">#{FILEPATH},</if>
+            <if test="UPLOADUSERGUID != null">#{UPLOADUSERGUID},</if>
+            <if test="UPLOADUSERDISPLAYNAME != null">#{UPLOADUSERDISPLAYNAME},</if>
+            <if test="UPLOADDATETIME != null">#{UPLOADDATETIME},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFrameAttachinfo" parameterType="FrameAttachinfo">
+        update frame_attachinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="attachfilename != null">attachfilename = #{attachfilename},</if>
+            <if test="CONTENTTYPE != null">CONTENTTYPE = #{CONTENTTYPE},</if>
+            <if test="ATTACHLENGTH != null">ATTACHLENGTH = #{ATTACHLENGTH},</if>
+            <if test="CLIENGTAG != null">CLIENGTAG = #{CLIENGTAG},</if>
+            <if test="CLIENGGUID != null">CLIENGGUID = #{CLIENGGUID},</if>
+            <if test="FILEPATH != null">FILEPATH = #{FILEPATH},</if>
+            <if test="UPLOADUSERGUID != null">UPLOADUSERGUID = #{UPLOADUSERGUID},</if>
+            <if test="UPLOADUSERDISPLAYNAME != null">UPLOADUSERDISPLAYNAME = #{UPLOADUSERDISPLAYNAME},</if>
+            <if test="UPLOADDATETIME != null">UPLOADDATETIME = #{UPLOADDATETIME},</if>
+        </trim>
+        where ATTACHGUID = #{ATTACHGUID}
+    </update>
+
+    <delete id="deleteFrameAttachinfoByATTACHGUID" parameterType="String">
+        delete from frame_attachinfo where ATTACHGUID = #{ATTACHGUID}
+    </delete>
+
+    <delete id="deleteFrameAttachinfoByATTACHGUIDs" parameterType="String">
+        delete from frame_attachinfo where ATTACHGUID in 
+        <foreach item="ATTACHGUID" collection="array" open="(" separator="," close=")">
+            #{ATTACHGUID}
+        </foreach>
+    </delete>
+</mapper>

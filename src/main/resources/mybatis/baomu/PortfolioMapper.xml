@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.baomu.mapper.PortfolioMapper">
+    
+    <resultMap type="Portfolio" id="PortfolioResult">
+        <result property="id"    column="id"    />
+        <result property="personInfoId"    column="person_info_id"    />
+        <result property="title"    column="title"    />
+        <result property="photoUrlId"    column="photo_url_id"    />
+    </resultMap>
+
+    <sql id="selectPortfolioVo">
+        select id, person_info_id, title, photo_url_id from portfolio
+    </sql>
+
+    <select id="selectPortfolioList" parameterType="Portfolio" resultMap="PortfolioResult">
+        <include refid="selectPortfolioVo"/>
+        <where>  
+            <if test="personInfoId != null "> and person_info_id = #{personInfoId}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="photoUrlId != null  and photoUrlId != ''"> and photo_url_id = #{photoUrlId}</if>
+        </where>
+    </select>
+    
+    <select id="selectPortfolioById" parameterType="Long" resultMap="PortfolioResult">
+        <include refid="selectPortfolioVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertPortfolio" parameterType="Portfolio" useGeneratedKeys="true" keyProperty="id">
+        insert into portfolio
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="personInfoId != null">person_info_id,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="photoUrlId != null">photo_url_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="personInfoId != null">#{personInfoId},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="photoUrlId != null">#{photoUrlId},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePortfolio" parameterType="Portfolio">
+        update portfolio
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="personInfoId != null">person_info_id = #{personInfoId},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="photoUrlId != null">photo_url_id = #{photoUrlId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePortfolioById" parameterType="Long">
+        delete from portfolio where id = #{id}
+    </delete>
+
+    <delete id="deletePortfolioByIds" parameterType="String">
+        delete from portfolio where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
