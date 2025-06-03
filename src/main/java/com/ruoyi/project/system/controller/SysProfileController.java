@@ -1,5 +1,6 @@
 package com.ruoyi.project.system.controller;
 
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
@@ -87,8 +89,10 @@ public class SysProfileController extends BaseController
      */
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PutMapping("/updatePwd")
-    public AjaxResult updatePwd(String oldPassword, String newPassword)
+    public AjaxResult updatePwd(@RequestBody Map<String, String> params)
     {
+        String oldPassword = params.get("oldPassword");
+        String newPassword = params.get("newPassword");
         LoginUser loginUser = getLoginUser();
         String userName = loginUser.getUsername();
         String password = loginUser.getPassword();
@@ -103,7 +107,8 @@ public class SysProfileController extends BaseController
         newPassword = SecurityUtils.encryptPassword(newPassword);
         if (userService.resetUserPwd(userName, newPassword) > 0)
         {
-            // 更新缓存用户密码
+            // 更新缓存用户密码&密码最后更新时间
+            loginUser.getUser().setPwdUpdateDate(DateUtils.getNowDate());
             loginUser.getUser().setPassword(newPassword);
             tokenService.setLoginUser(loginUser);
             return success();
