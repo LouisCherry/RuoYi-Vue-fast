@@ -9,11 +9,15 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.common.utils.file.FileUtils;
+import com.ruoyi.framework.aspectj.lang.annotation.Anonymous;
 import com.ruoyi.framework.config.RuoYiConfig;
 import com.ruoyi.framework.config.ServerConfig;
 import com.ruoyi.framework.security.LoginUser;
 import com.ruoyi.project.common.domain.FrameAttachinfo;
 import com.ruoyi.project.common.service.IFrameAttachinfoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author ruoyi
  * @date 2024-12-22
  */
+@Api(value = "/baomu/personinfo", description = "保姆个人信息")
 @RestController
 @RequestMapping("/baomu/personinfo")
 public class PersonInfoController extends BaseController
@@ -168,5 +173,17 @@ public class PersonInfoController extends BaseController
         {
             return AjaxResult.error(e.getMessage());
         }
+    }
+
+    /**
+     * 非隐私简历信息
+     */
+    @ApiOperation("非隐私简历信息")
+    @Anonymous
+    @GetMapping(value = "/publicresumeinfo/{id}")
+    @ApiImplicitParam(name = "id", value = "保姆ID", required = true, dataType = "int", paramType = "path", dataTypeClass = Integer.class)
+    public AjaxResult publicresumeinfo(@PathVariable("id") String id)
+    {
+        return success(personInfoService.selectPersonInfoById(id));
     }
 }

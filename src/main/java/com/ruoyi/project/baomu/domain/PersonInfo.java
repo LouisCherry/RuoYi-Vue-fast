@@ -1,6 +1,8 @@
 package com.ruoyi.project.baomu.domain;
 
 import java.util.List;
+
+import io.swagger.annotations.ApiModel;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
@@ -12,6 +14,7 @@ import com.ruoyi.framework.web.domain.BaseEntity;
  * @author ruoyi
  * @date 2024-12-22
  */
+@ApiModel(value = "PersonInfo", description = "保姆个人信息对象")
 public class PersonInfo extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
