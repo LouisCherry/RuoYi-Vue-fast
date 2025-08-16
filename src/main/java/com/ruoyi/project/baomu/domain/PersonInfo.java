@@ -77,6 +77,9 @@ public class PersonInfo extends BaseEntity
     /** 作品集合信息 */
     private List<Portfolio> portfolioList;
 
+    /** 证书列表信息 */
+    private List<Certificate> certificateList;
+
     public void setId(String id) 
     {
         this.id = id;
@@ -212,6 +215,14 @@ public class PersonInfo extends BaseEntity
     public void setPortfolioList(List<Portfolio> portfolioList)
     {
         this.portfolioList = portfolioList;
+    }
+
+    public List<Certificate> getCertificateList() {
+        return certificateList;
+    }
+
+    public void setCertificateList(List<Certificate> certificateList) {
+        this.certificateList = certificateList;
     }
 
     @Override

@@ -21,16 +21,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="selfIntroduction"    column="selfIntroduction"    />
     </resultMap>
 
+    <!-- 修改PersonInfoPortfolioResult，增加证书集合 -->
     <resultMap id="PersonInfoPortfolioResult" type="PersonInfo" extends="PersonInfoResult">
-        <collection property="portfolioList" ofType="Portfolio" column="id" select="selectPortfolioList" />
+        <collection property="portfolioList" ofType="Portfolio" column="id" select="selectPortfolioList"/>
+        <collection property="certificateList" ofType="Certificate" column="id" select="selectCertificateByPersonId"/>
     </resultMap>
-
     <resultMap type="Portfolio" id="PortfolioResult">
         <result property="id"    column="id"    />
         <result property="personInfoId"    column="person_info_id"    />
         <result property="title"    column="title"    />
         <result property="photoUrlId"    column="photo_url_id"    />
     </resultMap>
+
+    <!-- 新增证书结果集映射 -->
+    <resultMap type="Certificate" id="CertificateResult">
+        <result property="id" column="id"/>
+        <result property="personInfoId" column="person_info_id"/>
+        <result property="certificateName" column="certificate_name"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
 
     <sql id="selectPersonInfoVo">
         select id, full_name, occupation, salary_range, age, zodiac, province, ethnic_group, constellation, education, phone, work_experience, skills_and_strengths, selfIntroduction from person_info
@@ -151,4 +161,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             ( #{item.id}, #{item.personInfoId}, #{item.title}, #{item.photoUrlId})
         </foreach>
     </insert>
+
+
+
+
+    <!-- 新增证书查询语句 -->
+    <select id="selectCertificateByPersonId" parameterType="String" resultMap="CertificateResult">
+        select id, person_info_id, certificate_name, create_time
+        from certificate
+        where person_info_id = #{personInfoId}
+    </select>
+
+    <!-- 新增批量插入证书语句 -->
+    <insert id="batchCertificate">
+        insert into certificate(id, person_info_id, certificate_name, create_time)
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.id}, #{item.personInfoId}, #{item.certificateName}, #{item.createTime})
+        </foreach>
+    </insert>
+
+    <!-- 新增删除证书语句 -->
+    <delete id="deleteCertificateByPersonId" parameterType="String">
+        delete from certificate where person_info_id = #{personInfoId}
+    </delete>
+
+    <delete id="deleteCertificateByPersonInfoIds" parameterType="String">
+        delete from certificate where person_info_id in
+        <foreach item="personInfoId" collection="array" open="(" separator="," close=")">
+            #{personInfoId}
+        </foreach>
+    </delete>
+
 </mapper>

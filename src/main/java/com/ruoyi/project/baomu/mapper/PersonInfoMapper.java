@@ -1,6 +1,8 @@
 package com.ruoyi.project.baomu.mapper;
 
 import java.util.List;
+
+import com.ruoyi.project.baomu.domain.Certificate;
 import com.ruoyi.project.baomu.domain.PersonInfo;
 import com.ruoyi.project.baomu.domain.Portfolio;
 
@@ -67,6 +69,14 @@ public interface PersonInfoMapper
      * @return 结果
      */
     public int deletePortfolioByPersonInfoIds(String[] ids);
+
+    /**
+     * 批量删除证书
+     *
+     * @param ids 需要删除的数据主键集合
+     * @return 结果
+     */
+    public int deleteCertificateByPersonInfoIds(String[] ids);
     
     /**
      * 批量新增作品集合
@@ -84,4 +94,20 @@ public interface PersonInfoMapper
      * @return 结果
      */
     public int deletePortfolioByPersonInfoId(String id);
+
+    // 新增方法声明
+    /**
+     * 通过个人ID查询证书列表
+     */
+    public List<Certificate> selectCertificateByPersonId(String personInfoId);
+
+    /**
+     * 批量新增证书
+     */
+    public int batchCertificate(List<Certificate> certificateList);
+
+    /**
+     * 通过个人ID删除证书
+     */
+    public int deleteCertificateByPersonId(String personInfoId);
 }

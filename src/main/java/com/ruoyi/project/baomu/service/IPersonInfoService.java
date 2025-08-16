@@ -58,4 +58,10 @@ public interface IPersonInfoService
      * @return 结果
      */
     public int deletePersonInfoById(String id);
+
+    // 新增方法声明
+    /**
+     * 新增证书信息
+     */
+    public void insertCertificate(PersonInfo personInfo);
 }

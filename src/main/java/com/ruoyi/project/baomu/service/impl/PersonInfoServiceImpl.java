@@ -2,6 +2,7 @@ package com.ruoyi.project.baomu.service.impl;
 
 import java.util.*;
 
+import com.ruoyi.project.baomu.domain.Certificate;
 import com.ruoyi.project.common.domain.FrameAttachinfo;
 import com.ruoyi.project.common.mapper.FrameAttachinfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,6 +95,7 @@ public class PersonInfoServiceImpl implements IPersonInfoService
         }
         int rows = personInfoMapper.insertPersonInfo(personInfo);
         insertPortfolio(personInfo);
+        insertCertificate(personInfo); // 新增证书插入
         return rows;
     }
 
@@ -109,6 +111,10 @@ public class PersonInfoServiceImpl implements IPersonInfoService
     {
         personInfoMapper.deletePortfolioByPersonInfoId(personInfo.getId());
         insertPortfolio(personInfo);
+
+        // 新增证书删除与新增
+        personInfoMapper.deleteCertificateByPersonId(personInfo.getId());
+        insertCertificate(personInfo);
         return personInfoMapper.updatePersonInfo(personInfo);
     }
 
@@ -123,6 +129,7 @@ public class PersonInfoServiceImpl implements IPersonInfoService
     public int deletePersonInfoByIds(String[] ids)
     {
         personInfoMapper.deletePortfolioByPersonInfoIds(ids);
+        personInfoMapper.deleteCertificateByPersonInfoIds(ids);
         return personInfoMapper.deletePersonInfoByIds(ids);
     }
 
@@ -137,7 +144,9 @@ public class PersonInfoServiceImpl implements IPersonInfoService
     public int deletePersonInfoById(String id)
     {
         personInfoMapper.deletePortfolioByPersonInfoId(id);
+        personInfoMapper.deleteCertificateByPersonId(id); // 新增证书删除
         return personInfoMapper.deletePersonInfoById(id);
+
     }
 
     /**
@@ -163,4 +172,28 @@ public class PersonInfoServiceImpl implements IPersonInfoService
             }
         }
     }
+    // 在原有insertPortfolio方法下方新增
+    /**
+     * 新增证书信息
+     */
+    public void insertCertificate(PersonInfo personInfo) {
+        List<Certificate> certificateList = personInfo.getCertificateList();
+        String id = personInfo.getId();
+        if (StringUtils.isNotNull(certificateList)) {
+            List<Certificate> list = new ArrayList<>();
+            for (Certificate certificate : certificateList) {
+                certificate.setPersonInfoId(id);
+                if (StringUtils.isBlank(certificate.getId())) {
+                    certificate.setId(UUID.randomUUID().toString());
+                }
+                certificate.setCreateTime(new Date()); // 设置创建时间
+                list.add(certificate);
+            }
+            if (list.size() > 0) {
+                personInfoMapper.batchCertificate(list);
+            }
+        }
+    }
+
+
 }
