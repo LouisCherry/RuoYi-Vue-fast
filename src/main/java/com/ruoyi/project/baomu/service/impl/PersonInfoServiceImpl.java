@@ -1,14 +1,11 @@
 package com.ruoyi.project.baomu.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import com.ruoyi.project.common.domain.FrameAttachinfo;
 import com.ruoyi.project.common.mapper.FrameAttachinfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.Map;
 
 import com.ruoyi.common.utils.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -92,6 +89,9 @@ public class PersonInfoServiceImpl implements IPersonInfoService
     @Override
     public int insertPersonInfo(PersonInfo personInfo)
     {
+        if(StringUtils.isBlank(personInfo.getId())){
+            personInfo.setId(UUID.randomUUID().toString());
+        }
         int rows = personInfoMapper.insertPersonInfo(personInfo);
         insertPortfolio(personInfo);
         return rows;

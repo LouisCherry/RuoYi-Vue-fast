@@ -70,6 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertPersonInfo" parameterType="PersonInfo" useGeneratedKeys="true" keyProperty="id">
         insert into person_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
             <if test="fullName != null and fullName != ''">full_name,</if>
             <if test="occupation != null">occupation,</if>
             <if test="salaryRange != null">salary_range,</if>
@@ -85,6 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="selfIntroduction != null">selfIntroduction,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
             <if test="fullName != null and fullName != ''">#{fullName},</if>
             <if test="occupation != null">#{occupation},</if>
             <if test="salaryRange != null">#{salaryRange},</if>
