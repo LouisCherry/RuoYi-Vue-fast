@@ -74,6 +74,10 @@ public class PersonInfo extends BaseEntity
     @Excel(name = "自我介绍")
     private String selfIntroduction;
 
+    /** 头像 */
+    @Excel(name = "头像")  // 如需导出Excel可添加此注解
+    private String avatar;
+
     /** 作品集合信息 */
     private List<Portfolio> portfolioList;
 
@@ -207,6 +211,15 @@ public class PersonInfo extends BaseEntity
         return selfIntroduction;
     }
 
+    // 新增avatar的getter/setter
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     public List<Portfolio> getPortfolioList()
     {
         return portfolioList;
@@ -240,7 +253,8 @@ public class PersonInfo extends BaseEntity
             .append("education", getEducation())
             .append("phone", getPhone())
             .append("workExperience", getWorkExperience())
-            .append("skillsAndStrengths", getSkillsAndStrengths())
+            .append("avatar", getAvatar())
+                .append("skillsAndStrengths", getSkillsAndStrengths())
             .append("selfIntroduction", getSelfIntroduction())
             .append("portfolioList", getPortfolioList())
             .toString();

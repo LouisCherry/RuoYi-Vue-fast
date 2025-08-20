@@ -25,6 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectFrameAttachinfoVo"/>
         <where>  
             <if test="attachfilename != null  and attachfilename != ''"> and attachfilename like concat('%', #{attachfilename}, '%')</if>
+            <if test="ATTACHGUID != null  and ATTACHGUID != ''"> and ATTACHGUID =#{ATTACHGUID}</if>
             <if test="CONTENTTYPE != null  and CONTENTTYPE != ''"> and CONTENTTYPE = #{CONTENTTYPE}</if>
             <if test="CLIENGTAG != null  and CLIENGTAG != ''"> and CLIENGTAG = #{CLIENGTAG}</if>
             <if test="FILEPATH != null  and FILEPATH != ''"> and FILEPATH = #{FILEPATH}</if>

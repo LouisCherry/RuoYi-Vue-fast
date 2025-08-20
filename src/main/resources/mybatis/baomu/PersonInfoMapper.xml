@@ -19,6 +19,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="workExperience"    column="work_experience"    />
         <result property="skillsAndStrengths"    column="skills_and_strengths"    />
         <result property="selfIntroduction"    column="selfIntroduction"    />
+        <!-- 新增头像字段映射 -->
+        <result property="avatar" column="avatar" />
     </resultMap>
 
     <!-- 修改PersonInfoPortfolioResult，增加证书集合 -->
@@ -43,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
     <sql id="selectPersonInfoVo">
-        select id, full_name, occupation, salary_range, age, zodiac, province, ethnic_group, constellation, education, phone, work_experience, skills_and_strengths, selfIntroduction from person_info
+        select id, full_name, occupation, salary_range, age, zodiac, province, ethnic_group, constellation, education, phone, work_experience, skills_and_strengths, selfIntroduction,avatar from person_info
     </sql>
 
     <select id="selectPersonInfoList" parameterType="PersonInfo" resultMap="PersonInfoResult">
@@ -62,11 +64,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="workExperience != null  and workExperience != ''"> and work_experience = #{workExperience}</if>
             <if test="skillsAndStrengths != null  and skillsAndStrengths != ''"> and skills_and_strengths = #{skillsAndStrengths}</if>
             <if test="selfIntroduction != null  and selfIntroduction != ''"> and selfIntroduction = #{selfIntroduction}</if>
+            <if test="avatar != null  and avatar != ''"> and avatar = #{avatar}</if>
         </where>
     </select>
     
     <select id="selectPersonInfoById" parameterType="String" resultMap="PersonInfoPortfolioResult">
-        select id, full_name, occupation, salary_range, age, zodiac, province, ethnic_group, constellation, education, phone, work_experience, skills_and_strengths, selfIntroduction
+        select id, full_name, occupation, salary_range, age, zodiac, province, ethnic_group, constellation, education, phone, work_experience, skills_and_strengths, selfIntroduction,avatar
         from person_info
         where id = #{id}
     </select>
@@ -94,6 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="workExperience != null">work_experience,</if>
             <if test="skillsAndStrengths != null">skills_and_strengths,</if>
             <if test="selfIntroduction != null">selfIntroduction,</if>
+            <if test="avatar != null">avatar,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null and id != ''">#{id},</if>
@@ -110,6 +114,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="workExperience != null">#{workExperience},</if>
             <if test="skillsAndStrengths != null">#{skillsAndStrengths},</if>
             <if test="selfIntroduction != null">#{selfIntroduction},</if>
+            <if test="avatar != null">#{avatar}</if>
          </trim>
     </insert>
 
@@ -129,6 +134,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="workExperience != null">work_experience = #{workExperience},</if>
             <if test="skillsAndStrengths != null">skills_and_strengths = #{skillsAndStrengths},</if>
             <if test="selfIntroduction != null">selfIntroduction = #{selfIntroduction},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
         </trim>
         where id = #{id}
     </update>

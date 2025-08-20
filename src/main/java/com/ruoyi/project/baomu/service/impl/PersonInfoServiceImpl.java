@@ -42,6 +42,19 @@ public class PersonInfoServiceImpl implements IPersonInfoService
     {
         PersonInfo personInfo = personInfoMapper.selectPersonInfoById(id);
         List<Portfolio> portfolioList = personInfo.getPortfolioList();
+        //头像
+        if(StringUtils.isNotEmpty(personInfo.getAvatar())){
+            FrameAttachinfo frameAttachinfo = frameAttachinfoMapper.selectFrameAttachinfoByATTACHGUID(personInfo.getAvatar());
+            if(frameAttachinfo!=null){
+                personInfo.setParams(new HashMap<String,Object>() {{
+                    put("avatarurl", frameAttachinfo.getFILEPATH() == null ? "" : frameAttachinfo.getFILEPATH());
+                }});
+            }else{
+                personInfo.setParams(new HashMap<>());
+            }
+        }else{
+            personInfo.setParams(new HashMap<>());
+        }
         if(portfolioList!=null && portfolioList.size()>0){
             for(Portfolio portfolio : portfolioList){
                 Map<String,Object> imagelist = new HashMap<>();

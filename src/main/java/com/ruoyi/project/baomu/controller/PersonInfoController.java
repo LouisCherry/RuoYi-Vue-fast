@@ -147,6 +147,8 @@ public class PersonInfoController extends BaseController
             
             if(StringUtils.isNotEmpty(clientguid)){
                 frameAttachinfo.setCLIENGGUID(clientguid);
+            }else {
+                frameAttachinfo.setCLIENGGUID(frameAttachinfo.getATTACHGUID());
             }
             
             // 上传文件路径
@@ -230,7 +232,7 @@ public class PersonInfoController extends BaseController
         PublicResumeVO.PersonalInfo personalInfo = new PublicResumeVO.PersonalInfo();
         BeanUtils.copyProperties(personInfo, personalInfo);
         // 单独处理照片URL（原始数据中可能存储的是附件ID，需要转换为完整URL）
-        personalInfo.setPhotoUrl(getMainPhotoUrl(id));
+        personalInfo.setPhotoUrl(getMainPhotoUrl(personInfo.getAvatar()));
         result.setPersonalInfo(personalInfo);
 
         // 4. 封装自我介绍（直接使用富文本内容）
@@ -274,8 +276,7 @@ public class PersonInfoController extends BaseController
     private String getMainPhotoUrl(String personId) {
         // 查询个人主照片附件（假设主照片的标签为"main_photo"）
         FrameAttachinfo query = new FrameAttachinfo();
-        query.setCLIENGGUID(personId);
-        query.setCLIENGTAG("main_photo");
+        query.setATTACHGUID(personId);
         List<FrameAttachinfo> attachinfos = frameAttachinfoMapper.selectFrameAttachinfoList(query);
 
         // 若存在附件，拼接完整URL（服务器地址 + 文件路径）
