@@ -84,6 +84,9 @@ public class PersonInfo extends BaseEntity
     /** 证书列表信息 */
     private List<Certificate> certificateList;
 
+    /** 租户ID */
+    private Long tenantId;
+
     public void setId(String id) 
     {
         this.id = id;
@@ -238,6 +241,14 @@ public class PersonInfo extends BaseEntity
         this.certificateList = certificateList;
     }
 
+    public Long getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(Long tenantId) {
+        this.tenantId = tenantId;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -257,6 +268,7 @@ public class PersonInfo extends BaseEntity
                 .append("skillsAndStrengths", getSkillsAndStrengths())
             .append("selfIntroduction", getSelfIntroduction())
             .append("portfolioList", getPortfolioList())
+                .append("tenantId", getTenantId())
             .toString();
     }
 }
